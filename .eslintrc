@@ -1,0 +1,19 @@
+{
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "airbnb",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+    },
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true
+  },
+}
