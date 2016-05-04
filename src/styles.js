@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   navbarTitle: {
     color: '#444',
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   statusbar: {
     backgroundColor: '#fff',

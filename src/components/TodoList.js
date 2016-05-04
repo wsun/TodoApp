@@ -20,11 +20,6 @@ class TodoList extends Component {
 
     // bind just once
     this.renderRow = this.renderRow.bind(this);
-
-    // dataSource: this.state.dataSource.cloneWithRows([{ title: 'Pizza' }])
-
-    // load offline items
-    // listen for Firebase
   }
 
   renderRow(rowData) {
