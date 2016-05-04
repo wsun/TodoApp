@@ -15,7 +15,7 @@ function todo(state, action) {
   switch (action.type) {
     case ADD_TODO:
       return {
-        id: state.id,
+        id: action.id,
         text: action.text,
         completed: false,
       };
@@ -49,7 +49,7 @@ function todos(state = [], action) {
     case ADD_TODO:
       return [
         ...state,
-        todo({ id: state.todos.reduce((maxId, t) => Math.max(t.id, maxId), -1) + 1 }, action),
+        todo(undefined, action),
       ];
     case TOGGLE_TODO:
       return state.map(t => todo(t, action));

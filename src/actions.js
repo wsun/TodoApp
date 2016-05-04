@@ -43,16 +43,31 @@ export function getAllTodos() {
 }
 
 export function addTodo(text) {
-  fireRef.child('todos').push({ text, completed: false }, (err) => {
-    if (err) {
-      console.log('Error: ${err}');
-    }
-  });
+  return (dispatch) => {
+    // get push ID first, so we can update state with it
+    const newPostRef = fireRef.child('todos').push();
+    const newId = newPostRef.key();
+
+    // update state
+    dispatch({ type: ADD_TODO, id: newId, text });
+
+    // update server
+    newPostRef.set({ text, completed: false }, (err) => {
+      if (err) {
+        console.log('Error: ${err}');
+      }
+    });
+  };
 }
 export function toggleTodo(id) {
   return (dispatch, getState) => {
     const state = getState();
     const completed = !(state.todos.filter(t => t.id === id)[0].completed);
+
+    // update state
+    dispatch({ type: TOGGLE_TODO, id });
+
+    // update server
     fireRef.child('todos').child(id).update({ completed }, (err) => {
       if (err) {
         console.log('Error: ${err}');
