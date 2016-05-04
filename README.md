@@ -9,7 +9,7 @@ Based off the Redux Todo example, built with React Native 24 and Redux 3.5 http:
 git clone https://github.com/wsun/TodoApp.git
 cd TodoApp
 npm install
-cp example.config.js
+cp example.config.js config.js
 ```
 - Input your Firebase ref into `config.js`
 - `react-native run-ios` or `react-native run-android`
