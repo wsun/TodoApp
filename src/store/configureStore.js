@@ -1,23 +1,18 @@
-import { createStore } from 'redux';
-import todoApp from '../reducers';
+import { createStore, applyMiddleware, compose } from 'redux';
+import reducer from '../reducers';
 import devTools from 'remote-redux-devtools';
+import thunk from 'redux-thunk';
+import { getAllTodos } from '../actions';
 
-const initial = {
-  visibilityFilter: 'SHOW_ALL',
-  todos: [
-    {
-      id: 1,
-      text: 'Pizza',
-      completed: true,
-    },
-    {
-      id: 2,
-      text: 'Fruit',
-      completed: false,
-    },
-  ],
-};
+const store = createStore(
+  reducer,
+  compose(
+    applyMiddleware(thunk),
+    devTools()
+  )
+);
 
-// devTools() for remote
-const store = devTools()(createStore)(todoApp);
+// set up initial state
+store.dispatch(getAllTodos());
+
 export default store;

@@ -1,5 +1,11 @@
 import { combineReducers } from 'redux';
-import { ADD_TODO, TOGGLE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from './actions';
+import {
+  ADD_TODO,
+  TOGGLE_TODO,
+  RECEIVE_TODOS,
+  SET_VISIBILITY_FILTER,
+  VisibilityFilters,
+} from './actions';
 const { SHOW_ALL } = VisibilityFilters;
 
 /*
@@ -9,7 +15,7 @@ function todo(state, action) {
   switch (action.type) {
     case ADD_TODO:
       return {
-        id: action.id,
+        id: state.id,
         text: action.text,
         completed: false,
       };
@@ -43,10 +49,23 @@ function todos(state = [], action) {
     case ADD_TODO:
       return [
         ...state,
-        todo(undefined, action),
+        todo({ id: state.todos.reduce((maxId, t) => Math.max(t.id, maxId), -1) + 1 }, action),
       ];
     case TOGGLE_TODO:
       return state.map(t => todo(t, action));
+
+    // convert to array for easy filtering
+    case RECEIVE_TODOS: {
+      const ts = [];
+      action.todos.forEach((t) => {
+        ts.push({
+          id: t.key(),
+          text: t.val().text,
+          completed: t.val().completed,
+        });
+      });
+      return ts;
+    }
     default:
       return state;
   }
@@ -55,9 +74,9 @@ function todos(state = [], action) {
 /*
  * combined reducer
  */
-const todoApp = combineReducers({
+const reducer = combineReducers({
   visibilityFilter,
   todos,
 });
 
-export default todoApp;
+export default reducer;
