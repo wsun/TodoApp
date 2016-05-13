@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
   ADD_TODO,
   TOGGLE_TODO,
+  RECEIVE_TODOS,
   RECEIVE_TODO,
   RECEIVE_CHANGED_TODO,
   SET_VISIBILITY_FILTER,
@@ -69,6 +70,18 @@ function todos(state = [], action) {
         ...state,
         todo(undefined, action),
       ];
+
+    case RECEIVE_TODOS: {
+      const ts = [];
+      action.todos.forEach((t) => {
+        ts.push({
+          id: t.val().id,
+          text: t.val().text,
+          completed: t.val().completed,
+        });
+      });
+      return ts;
+    }
 
     case RECEIVE_TODO:
       if (state.filter(t => t.id === action.todo.id).length > 0) {

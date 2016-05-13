@@ -8,6 +8,7 @@ import { FIREBASE_ROOT } from '../config';
 export const ADD_TODO = 'ADD_TODO';
 export const TOGGLE_TODO = 'TOGGLE_TODO';
 export const RECEIVE_TODO = 'RECEIVE_TODO';
+export const RECEIVE_TODOS = 'RECEIVE_TODOS';
 export const RECEIVE_CHANGED_TODO = 'RECEIVE_CHANGED_TODO';
 export const DISPLAY_MESSAGE = 'DISPLAY_MESSAGE';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
@@ -26,7 +27,12 @@ export const VisibilityFilters = {
  */
 
 const fireRef = new Firebase(FIREBASE_ROOT);
-
+function receiveTodos(todos) {
+  return {
+    type: RECEIVE_TODOS,
+    todos,
+  };
+}
 function receiveNewTodo(todo) {
   return {
     type: RECEIVE_TODO,
@@ -45,6 +51,16 @@ export function getAllTodos() {
   return dispatch => {
     fireRef.child('todos').on('child_added', snapshot =>
       dispatch(receiveNewTodo(snapshot.val()))
+    );
+    fireRef.child('todos').on('child_changed', snapshot =>
+      dispatch(receiveChangedTodo(snapshot.val()))
+    );
+  };
+}
+export function getAllTodosOnce() {
+  return dispatch => {
+    fireRef.child('todos').once('value', snapshot =>
+      dispatch(receiveTodos(snapshot))
     );
     fireRef.child('todos').on('child_changed', snapshot =>
       dispatch(receiveChangedTodo(snapshot.val()))

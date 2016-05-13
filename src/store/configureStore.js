@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import reducer from '../reducers';
 import devTools from 'remote-redux-devtools';
 import thunk from 'redux-thunk';
-import { getAllTodos } from '../actions';
+import { getAllTodos, getAllTodosOnce } from '../actions';
 
 const store = createStore(
   reducer,
@@ -13,6 +13,6 @@ const store = createStore(
 );
 
 // set up initial state
-store.dispatch(getAllTodos());
+store.dispatch(getAllTodosOnce());
 
 export default store;
